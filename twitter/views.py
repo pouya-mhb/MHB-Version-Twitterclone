@@ -23,8 +23,10 @@ def home(request):
 def register(request):
 	if request.method == 'POST':
 		form = UserRegisterForm(request.POST)
-		if form.is_valid():
+		p_form = ProfileUpdateForm(request.user, request.FILES, instance=request.user.profile)
+		if form.is_valid() and p_form.is_valid():
 			form.save()
+			p_form.save()
 			return redirect('home')
 	else:
 		form = UserRegisterForm()
