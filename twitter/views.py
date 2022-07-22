@@ -46,7 +46,7 @@ def profile(request, username):
 	return render(request, 'twitter/profile.html', context)
 
 @login_required
-def editar(request):
+def profile_setting(request):
 	if request.method == 'POST':
 		u_form = UserUpdateForm(request.POST, instance=request.user)
 		p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
@@ -60,7 +60,7 @@ def editar(request):
 		p_form = ProfileUpdateForm()
 
 	context = {'u_form' : u_form, 'p_form' : p_form}
-	return render(request, 'twitter/editar.html', context)
+	return render(request, 'twitter/profile_setting.html', context)
 
 @login_required
 def follow(request, username):
