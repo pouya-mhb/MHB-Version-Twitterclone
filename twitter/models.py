@@ -4,11 +4,11 @@ from django.utils import timezone
 
 class Profile(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
-	bio = models.CharField(default='Hola, twitter', max_length=100)
+	bio = models.CharField(default='This is my Bio', max_length=100)
 	image = models.ImageField(default='default.png')
 
 	def __str__(self):
-		return f'Perfil de {self.user.username}'
+		return f'Profile {self.user.username}'
 
 	def following(self):
 		user_ids = Relationship.objects.filter(from_user=self.user)\
@@ -39,20 +39,4 @@ class Relationship(models.Model):
 
 	def __str__(self):
 		return f'{self.from_user} to {self.to_user}'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
