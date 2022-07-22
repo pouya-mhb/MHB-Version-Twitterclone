@@ -1,0 +1,34 @@
+{% extends 'twitter/base.html' %}
+{% load bootstrap5 %}
+{% block content %}
+
+    <div id="main" class="container-fluid d-flex">
+        <div class="">
+            <div id="inputTweetArea" class="tweet-wrap2">
+                <div class="d-flex">
+                    <div class="col-xs">
+                    
+                        <img src="{{ request.user.profile.image.url }}" alt="" class="avator">
+                      
+                    </div>
+
+                    
+                    <form class="col pr-0" method="post" enctype="multipart/form-data">
+                        {% bootstrap_form u_form %}  
+                        {% bootstrap_form p_form %}
+                        {% csrf_token %}
+                        {% buttons %}
+                        <button type="submit" class="btn btn-success">
+                            Save
+                        </button>
+                        {% endbuttons %}
+                    </form>
+                    
+                    
+                </div>
+            </div>
+        </div>
+        <!-- End Center -->
+    </div>
+
+{% endblock content %}
