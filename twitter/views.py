@@ -70,12 +70,16 @@ def profile_setting(request):
 
 @login_required
 def follow(request, username):
-	current_user = request.user
-	to_user = User.objects.get(username=username)
-	to_user_id = to_user
-	rel = Relationship(from_user=current_user, to_user=to_user_id)
-	rel.save()
-	return redirect('home')
+    try:
+        current_user = request.user
+        to_user = User.objects.get(username=username)
+        # Check if the relationship already exists
+        if not Relationship.objects.filter(from_user=current_user, to_user=to_user).exists():
+            Relationship.objects.create(from_user=current_user, to_user=to_user)
+    except User.DoesNotExist:
+        # Handle the case where the user does not exist
+        return redirect('home')
+    return redirect('home')
 
 @login_required
 def unfollow(request, username):
