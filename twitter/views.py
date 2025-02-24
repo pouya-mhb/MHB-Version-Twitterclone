@@ -3,6 +3,7 @@ from .models import Profile, Post, Relationship
 from .forms import UserRegisterForm, PostForm, ProfileUpdateForm, UserUpdateForm
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login
 
 @login_required
 def home(request):
@@ -23,10 +24,13 @@ def home(request):
 def register(request):
 	if request.method == 'POST':
 		form = UserRegisterForm(request.POST)
-		p_form = ProfileUpdateForm(request.user, request.FILES, instance=request.user.profile)
-		if form.is_valid() and p_form.is_valid():
-			form.save()
-			p_form.save()
+		# p_form = ProfileUpdateForm(request.user, request.FILES, instance=request.user.profile)
+		# if form.is_valid() and p_form.is_valid():
+		if form.is_valid() :
+			user = form.save()
+			Profile.objects.create(user=user)
+			login(request, user)
+			# p_form.save()
 			return redirect('home')
 	else:
 		form = UserRegisterForm()
@@ -81,28 +85,3 @@ def unfollow(request, username):
 	rel = Relationship.objects.get(from_user=current_user.id, to_user=to_user_id)
 	rel.delete()
 	return redirect('home')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
