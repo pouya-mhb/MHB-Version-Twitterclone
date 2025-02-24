@@ -83,9 +83,16 @@ def follow(request, username):
 
 @login_required
 def unfollow(request, username):
-	current_user = request.user
-	to_user = User.objects.get(username=username)
-	to_user_id = to_user.id
-	rel = Relationship.objects.get(from_user=current_user.id, to_user=to_user_id)
-	rel.delete()
-	return redirect('home')
+    try:
+        current_user = request.user
+        to_user = User.objects.get(username=username)
+        # Check if the relationship exists
+        rel = Relationship.objects.get(from_user=current_user, to_user=to_user)
+        rel.delete()
+    except User.DoesNotExist:
+        # Handle the case where the user does not exist
+        return redirect('home')
+    except Relationship.DoesNotExist:
+        # Handle the case where the relationship does not exist
+        return redirect('home')
+    return redirect('home')
